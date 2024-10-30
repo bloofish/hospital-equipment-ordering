@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS requests (
+  id SERIAL PRIMARY KEY,
+  ward_id INTEGER NOT NULL,
+  equipment_name VARCHAR(255) NOT NULL,
+  quantity INTEGER NOT NULL
+);
