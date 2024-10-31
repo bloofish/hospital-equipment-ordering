@@ -1,7 +1,11 @@
 import React from 'react';
+import EquipmentForm from './EquipmentForm';
 
 function App() {
-  return <h1>headingtest</h1>;
+  return <div>
+  <h1>Hospital Equipment Ordering</h1>
+  <EquipmentForm />
+</div>;
 }
 
 export default App;

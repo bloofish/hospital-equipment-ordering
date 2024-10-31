@@ -26,7 +26,7 @@ module.exports = {
   ],
   devServer: {
     static: path.join(__dirname, 'dist'),  // folder to serve
-    port: 3000,
+    port: 3001,
     hot: true,  // hot reloading on
   },
 };
