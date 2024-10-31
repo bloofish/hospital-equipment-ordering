@@ -23,6 +23,21 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+app.get('/orders/:ward', async (req, res) => {
+  const {ward} = req.params;
+  try{
+    const query = 'SELECT * FROM requests WHERE ward_id =$1';
+    const values = [ward];
+    const result = await pool.query(query, values);
+
+    res.status(200).json(result.rows);
+  }
+  catch(error){
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ message: 'Failed to retrieve orders' });
+  }
+})
+
 app.post("/submit-request", async (req, res) => {
   console.log(req.body);
 

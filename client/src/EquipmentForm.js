@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function EquipmentForm() {
+function EquipmentForm({setWardId}) {
   const [ward, setWard] = useState("");
   const [equipment, setEquipment] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -8,6 +8,8 @@ function EquipmentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setWardId(ward); //send ward_id to App.js
 
     try {
       //send a fetch request submitting form data and saving the response
