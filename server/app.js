@@ -39,7 +39,6 @@ app.get('/orders/:ward', async (req, res) => {
 })
 
 app.post("/submit-request", async (req, res) => {
-  console.log(req.body);
 
   const { ward_id, equipment_name, quantity } = req.body;
 
@@ -66,6 +65,45 @@ app.post("/submit-request", async (req, res) => {
     res.status(500).json({ message: "Failed to submit request to database" });
   }
 });
+
+app.delete("/orders/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try{
+    const query = "DELETE FROM requests WHERE id = $1 RETURNING *";
+    const values = [id];
+    const result = await pool.query(query, values);
+    res
+      .status(200)
+      .json({
+        message: "Request deleted successfully",
+        request: result,
+      });
+  }
+  catch(error){
+    console.error("Error deleting:", error);
+    res.status(500).json({message: "Failed to delete data"});
+  }
+})
+
+app.post("/orders/:update/:id", async (req, res) => {
+  const { update, id } = req.params;
+  try{
+    const query = "UPDATE requests SET status = $1 WHERE id = $2 RETURNING *";
+    const values = [update, id];
+    const result = await pool.query(query, values);
+    res
+      .status(200)
+      .json({
+        message: "Order updated successfully",
+        request: result,
+      });
+  }
+  catch(error){
+    console.error("Error updating:", error);
+    res.status(500).json({message: "Failed to update"});
+  }
+})
+
 app.get("/", (req, res) => {
   res.send("Server is running");
 });

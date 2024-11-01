@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 
 function OrderManagement({ ward }) {
   const [orders, setOrders] = useState([]);
+  const [deleteOrderId, setDeleteOrderId] = useState();
+  const [cancelOrderId, setCancelOrderId] = useState();
+  const [update, setUpdate] = useState();
+
+
 
   const fetchOrders = async () => {
     try {
@@ -10,6 +15,30 @@ function OrderManagement({ ward }) {
       setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    }
+  };
+
+
+  const deleteOrder = async (deleteOrderId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/orders/delete/${deleteOrderId}`, {method: "DELETE"}); 
+      const data = await response.json();
+      fetchOrders();
+    } catch (error) {
+        console.error("Error deleting order:", error);
+
+    }
+  };
+  
+  //fetch post to change status of an order
+  const updateOrder = async (updateOrderId, update) => {
+    try {
+      const response = await fetch(`http://localhost:3000/orders/${update}/${updateOrderId}`, {method: "POST"}); 
+      const data = await response.json();
+      fetchOrders();
+    } catch (error) {
+        console.error("Error updating order:", error);
+
     }
   };
 
@@ -24,9 +53,14 @@ function OrderManagement({ ward }) {
       <ul>
         {orders.map((order) => (
           <li key={order.id}>
+            <p>ID: {order.id}</p>
             <p>Equipment: {order.equipment_name}</p>
             <p>Quantity: {order.quantity}</p>
             <p>Status: {order.status}</p>
+            <button onClick={() => updateOrder(order.id, "sent")}>Sent</button>
+            <button onClick={() => updateOrder(order.id, "delivered")}>Delivered</button>
+            <button onClick={() => updateOrder(order.id, "cancel")}>Cancel</button>
+            <button onClick={() => deleteOrder(order.id)}>Complete</button>
           </li>
         ))}
       </ul>
