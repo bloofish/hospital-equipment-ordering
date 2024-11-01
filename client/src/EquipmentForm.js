@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 
-function EquipmentForm({setWardId}) {
-  const [ward, setWard] = useState("");
+function EquipmentForm({ward}) {
   const [equipment, setEquipment] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [responseMessage, setResponseMessage] = useState(""); // store response
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setWardId(ward); //send ward_id to App.js
 
     try {
       //send a fetch request submitting form data and saving the response
@@ -41,15 +38,6 @@ function EquipmentForm({setWardId}) {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
-          Ward:
-          <input
-            type="number"
-            value={ward}
-            onChange={(e) => setWard(e.target.value)}
-            required
-          />
-        </label>
         <label>
           Equipment Name:
           <input

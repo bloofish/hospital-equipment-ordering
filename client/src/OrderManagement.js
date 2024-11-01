@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-function OrderManagement({ward}) {    
+function OrderManagement({ ward }) {
   const [orders, setOrders] = useState([]);
 
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/orders/${ward}`);
+      const data = await response.json();
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/orders/${ward}`);
-        const data = await response.json();
-        setOrders(data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
-    if (ward) { //check ward exists before fetching
-        fetchOrders();
-      }
-    }, [ward]); //dependency to rerun if ward changes
+    fetchOrders();
+  }, [ward]);
 
   return (
     <div>
       <h2>Order Management for Ward {ward}</h2>
+      <button onClick={fetchOrders}>Refresh</button>
       <ul>
         {orders.map((order) => (
           <li key={order.id}>
