@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "./style.css";
+
 
 function SignIn({ setWardId , setIsAdmin}) {
   const [selectedWard, setSelectedWard] = useState(1);
@@ -17,7 +19,7 @@ function SignIn({ setWardId , setIsAdmin}) {
   };
 
   return (
-    <div>
+    <div className="container">
       <form>
         <label>
           <input
@@ -39,7 +41,7 @@ function SignIn({ setWardId , setIsAdmin}) {
           />
             Ward 2
         </label>
-        <label>
+        <label style = {{paddingLeft: "20px"}}>
           <input
             type="radio"
             name="admin"

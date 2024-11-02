@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./style.css";
 
 function EquipmentForm({ward}) {
   const [equipment, setEquipment] = useState("");
@@ -36,9 +37,9 @@ function EquipmentForm({ward}) {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div className="container">
+      <form onSubmit={handleSubmit} className="list-item"> 
+        <label className="paragraph">
           Equipment Name:
           <input
             type="text"
@@ -47,7 +48,7 @@ function EquipmentForm({ward}) {
             required
           />
         </label>
-        <label>
+        <label className="paragraph">
           Quantity:
           <input
             type="number"
