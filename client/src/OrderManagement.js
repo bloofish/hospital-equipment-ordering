@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function OrderManagement({ ward }) {
+function OrderManagement({ ward, isAdmin }) {
   const [orders, setOrders] = useState([]);
   const [deleteOrderId, setDeleteOrderId] = useState();
   const [cancelOrderId, setCancelOrderId] = useState();
@@ -29,7 +29,7 @@ function OrderManagement({ ward }) {
 
     }
   };
-  
+
   //fetch post to change status of an order
   const updateOrder = async (updateOrderId, update) => {
     try {
@@ -57,10 +57,18 @@ function OrderManagement({ ward }) {
             <p>Equipment: {order.equipment_name}</p>
             <p>Quantity: {order.quantity}</p>
             <p>Status: {order.status}</p>
+            {(order.status == "pending" && isAdmin == "1") && (
             <button onClick={() => updateOrder(order.id, "sent")}>Sent</button>
+            )}
+            {(order.status == "sent" || isAdmin == "1") && (
             <button onClick={() => updateOrder(order.id, "delivered")}>Delivered</button>
+            )}
+            {(order.status == "pending" || isAdmin == "1") && (
             <button onClick={() => updateOrder(order.id, "cancel")}>Cancel</button>
-            <button onClick={() => deleteOrder(order.id)}>Complete</button>
+            )}
+            {(order.status == "delivered" || order.status == "cancel" || isAdmin == "1") && (
+            <button onClick={() => deleteOrder(order.id)}>Delete</button>
+            )}
           </li>
         ))}
       </ul>

@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 
-function SignIn({ setWardId }) {
+function SignIn({ setWardId , setIsAdmin}) {
   const [selectedWard, setSelectedWard] = useState(1);
+  const [isAdminSelected, setIsAdminSelected] = useState(0);
+
 
   const handleOptionChange = (event) => {
     setSelectedWard(event.target.value);
     const ward = event.target.value;
     setWardId(ward); //send ward_id to App.js
-
+  };
+  const handleAdminChange = (event) => {
+    setIsAdminSelected(event.target.value);
+    const admin = event.target.value;
+    setIsAdmin(admin); // send admin to App.js
   };
 
   return (
@@ -33,6 +39,28 @@ function SignIn({ setWardId }) {
           />
             Ward 2
         </label>
+        <label>
+          <input
+            type="radio"
+            name="admin"
+            value="0"
+            checked={isAdminSelected == "0"}
+            onChange={handleAdminChange}
+          />
+            Staff
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="admin"
+            value="1"
+            checked={isAdminSelected == "1"}
+            onChange={handleAdminChange}
+          />
+            Admin
+        </label>
+        
+        
       </form>
     </div>
   );
