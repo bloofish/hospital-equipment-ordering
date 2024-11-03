@@ -1,32 +1,48 @@
 import React, { useState } from "react";
 import "./style.css";
 
-function EquipmentForm({ward}) {
+function EquipmentForm({ward, fetchOrders}) {
   const [equipment, setEquipment] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [responseMessage, setResponseMessage] = useState(""); // store response
 
+  const ADDRESS = "http://192.168.1.154:3000";
+
+  
+  const sanitizeInput = (input) => {
+    return input.replace(/[^\w\s]/gi, "").trim(); // alphanumeric only
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const sanEquipment = sanitizeInput(equipment);
+    const sanQuantity = Math.abs(parseInt(quantity, 10));
+
+    if (!sanEquipment || sanQuantity <= 0) {
+      setResponseMessage("Invalid input: Check equipment name or quantity.");
+      return;
+    }
+
     try {
       //send a fetch request submitting form data and saving the response
-      const response = await fetch("http://localhost:3000/submit-request", {
+      const response = await fetch(`${ADDRESS}/submit-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        },
+        },  
         body: JSON.stringify({
           ward_id: ward,
-          equipment_name: equipment,
-          quantity: quantity,
+          equipment_name: sanEquipment,
+          quantity: sanQuantity,
         }),
       });
       //data from the response
       const data = await response.json();
 
       if (response.ok) {
-        setResponseMessage(data.message); // Display the success message
+        fetchOrders();
+        setResponseMessage("");
       } else {
         setResponseMessage(data.message || "Failed to submit request to server");
       }
